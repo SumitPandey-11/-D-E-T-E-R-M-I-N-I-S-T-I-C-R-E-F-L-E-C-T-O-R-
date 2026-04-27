@@ -2,17 +2,24 @@
 
 > **"Turning Chaos into Clarity through Rule-Based Logic"**
 
-## 📌 Project Overview
-This project is a **Deterministic Decision Support System** designed for daily reflection. Unlike probabilistic AI models that can be unpredictable, this system uses a strict, mathematical approach to provide consistent, actionable advice based on 48 unique input combinations.
+## 📝 Problem Statement
+Daily productivity and mental well-being often suffer from "Decision Fatigue." When individuals are stressed, sad, or overwhelmed, they struggle to choose the most effective self-care or work strategy. While AI-based assistants exist, they are often **non-deterministic**, providing inconsistent or vague advice that lacks the reliability needed for a stable daily routine. This project aims to provide a high-reliability, fixed-logic tool that gives the **exact same advice for the exact same state**, every single time.
 
-## 🏆 Why This Solution Wins
-1.  **100% Deterministic**: Same input always equals the same output. No hallucinations.
-2.  **Professional UX**: Features a color-coded CLI, simulated processing weight, and ASCII aesthetics.
-3.  **Audit Trail**: Includes a **Decision Trace** that explains the "Why" behind every recommendation.
-4.  **Data Persistence**: Automatically logs sessions to `reflection_history.json` for long-term mood tracking.
-5.  **Robust Guardrails**: Implements "Fail-Fast" validation to ensure data integrity.
+## ⚙️ Approach
+My development approach focused on **predictability and transparency**:
+1.  **Logic Separation**: I decoupled the input validation (Guardrails) from the decision-making logic to ensure "clean" data flow.
+2.  **State Mapping**: I mapped 48 potential user states across 4 variables (Mood, Energy, Time, Productivity) to specific, actionable outcomes.
+3.  **UX Psychology**: I implemented simulated processing delays (`time.sleep`) and a "Decision Trace" to give the user confidence that their specific inputs were carefully analyzed.
+4.  **Data Persistence**: I chose JSON for logging to allow for future data visualization and trend analysis.
 
-## 🌳 System Logic Flow
+## 🌳 Decision Tree Logic
+The system follows a hierarchical branching structure:
+- **Primary Filter (Mood)**: The emotional state dictates the "category" of help needed (Regulation, Activation, Momentum, or Maintenance).
+- **Secondary Filter (Time/Energy)**: Depending on the mood, the system checks the most constrained resource.
+    - *Stressed?* We check **Time** (Free vs. Limited) to recommend deep or quick relief.
+    - *Sad?* We check **Energy** to see if we can "Activate" the user or if they need "Rest."
+    - *Happy?* We check **Productivity** to capitalize on the positive flow state.
+    - *Neutral?* We check **Energy** to assign high-effort growth tasks or low-effort admin tasks.
 
 ```mermaid
 graph TD
@@ -36,26 +43,34 @@ graph TD
 ```
 
 ## 🛡️ Technical Guardrails
-| Feature | Implementation | Benefit |
+| Feature | Implementation | Purpose |
 | :--- | :--- | :--- |
-| **Whitelisting** | `valid_options` array | Eliminates invalid states/hallucinations |
-| **Persistence** | `json` module | Enables historical data analysis |
-| **Traceability** | `trace` list | Provides transparency for the decision-making process |
-| **UX Polish** | `time.sleep` & `colorama` | Enhances perceived value and user engagement |
+| **Whitelisting** | `valid_options` array | Prevents AI "hallucination" by rejecting any non-predefined input. |
+| **Case Normalization** | `.lower().strip()` | Ensures "HAPPY" and "happy" are treated identically, preventing logic breaks. |
+| **Traceability** | `trace` list | Shows the user the internal logic steps, ensuring transparency. |
+| **Persistence** | `json` module | Ensures user data is stored safely for historical tracking. |
+
+## 🤖 AI Usage Explanation
+In this project, AI was used as a **Collaborative Architect** and **Efficiency Tool**:
+- **Design Refinement**: AI was used to brainstorm the 48 logic branches to ensure no overlapping conditions.
+- **Visual Aesthetics**: I used AI to generate the ANSI color schemes and the stylized ASCII header to ensure a "Premium" feel.
+- **Logic Verification**: I used AI to "stress-test" my `if-else` blocks to ensure that every possible input combination led to a valid leaf node.
+- **Correction**: I manually overruled AI suggestions for "Generative Advice" (vague tips) and replaced them with **Strict Actionable Suggestions** to maintain the project's deterministic integrity.
 
 ## 🚀 How to Run
-1. **Clone & Run**:
-   ```bash
-   python main.py
-   ```
-2. **Review History**:
-   Open `reflection_history.json` to see your past logged sessions.
+1.  **Clone the Repo**
+2.  **Run the Script**:
+    ```bash
+    python main.py
+    ```
+3.  **Check History**: Review `reflection_history.json` for your past logs.
 
 ## 📊 Sample Execution
 ```text
- 1. Checking Mood: STRESSED
- 2. Evaluating Time Constraint: limited
+ --- [STEP 2: DECISION TRACE] ---
+  1. ✓ Checking Mood: STRESSED
+  2. ✓ Evaluating Time Constraint: limited
 
-🎯 RECOMMENDED ACTION:
-Practice 5-min Box Breathing & Identify 1 'Must-Do' Task.
+ --- [STEP 3: FINAL SUGGESTION] ---
+ 🎯 Practice 5-min Box Breathing & Identify 1 'Must-Do' Task.
 ```
